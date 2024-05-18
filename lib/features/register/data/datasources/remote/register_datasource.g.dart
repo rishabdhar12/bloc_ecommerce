@@ -38,7 +38,7 @@ class _RegisterApiService implements RegisterApiService {
     )
             .compose(
               _dio.options,
-              'auth/login',
+              '/users/',
               queryParameters: queryParameters,
               data: _data,
             )

@@ -12,7 +12,7 @@ String baseUrlPath = dotenv.env['BASE_URL']!;
 abstract class RegisterApiService {
   factory RegisterApiService(Dio dio) = _RegisterApiService;
 
-  @POST('auth/login')
+  @POST('/users/')
   @Headers(<String, dynamic>{
     'Content-Type': 'application/json',
   })
