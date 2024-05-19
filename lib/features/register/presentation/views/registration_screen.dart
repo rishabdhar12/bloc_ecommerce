@@ -5,6 +5,7 @@ import 'package:bloc_ecommerce/features/register/presentation/bloc/register_bloc
 import 'package:bloc_ecommerce/features/register/presentation/bloc/register_event.dart';
 import 'package:bloc_ecommerce/features/register/presentation/bloc/register_state.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,53 +23,31 @@ class _RegistrationFormState extends State<RegistrationForm> {
   final TextEditingController _passwordController = TextEditingController();
   String? _avatarUrl;
 
+  void onSubmit() {
+    if (_formKey.currentState!.validate()) {
+      BlocProvider.of<RemoteRegisterBloc>(context).add(
+        UserRegister(
+          registrationParams: RegistrationParams(
+            name: _nameController.text,
+            email: _emailController.text,
+            avatar: _avatarUrl!,
+            password: _passwordController.text,
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Registration Form'),
-      ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(vertical: 48.0, horizontal: 16.0),
         child: Form(
           key: _formKey,
           child: ListView(
+            shrinkWrap: false,
             children: <Widget>[
-              TextFormField(
-                controller: _nameController,
-                decoration: const InputDecoration(labelText: 'Name'),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter your name';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _emailController,
-                decoration: const InputDecoration(labelText: 'Email'),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter your email';
-                  }
-                  if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                    return 'Please enter a valid email address';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _passwordController,
-                decoration: const InputDecoration(labelText: 'Password'),
-                obscureText: true,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter your password';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 20),
               GestureDetector(
                 onTap: () async {
                   setState(() {
@@ -85,10 +64,49 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 ),
               ),
               const SizedBox(height: 20),
+              textFormField(
+                controller: _nameController,
+                inputType: TextInputType.name,
+                hintText: "Enter name",
+                validate: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter your name';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 20),
+              textFormField(
+                controller: _emailController,
+                inputType: TextInputType.emailAddress,
+                hintText: "Enter email",
+                validate: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter your email';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 20),
+              textFormField(
+                controller: _passwordController,
+                hintText: 'Enter Password',
+                inputType: TextInputType.visiblePassword,
+                obscureText: true,
+                validate: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter your password';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 50),
               BlocBuilder<RemoteRegisterBloc, RemoteRegisterState>(
                 builder: (context, state) {
                   if (state is RegisterLoadingState) {
-                    return const CupertinoActivityIndicator();
+                    return const CupertinoActivityIndicator(
+                      radius: 20,
+                    );
                   }
                   if (state is RegisterFinishedState) {
                     debugPrint("User login");
@@ -97,27 +115,92 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   if (state is RegisterErrorState) {
                     log(state.message);
                   }
-                  return ElevatedButton(
+                  return elevatedButton(
+                    context,
+                    title: "SUBMIT",
                     onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        BlocProvider.of<RemoteRegisterBloc>(context).add(
-                          UserRegister(
-                            registrationParams: RegistrationParams(
-                                name: _nameController.text,
-                                email: _emailController.text,
-                                avatar: _avatarUrl!,
-                                password: _passwordController.text),
-                          ),
-                        );
-                      }
+                      onSubmit();
                     },
-                    child: const Text('Submit'),
                   );
                 },
               ),
+              const SizedBox(height: 30),
+              RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  text: 'Already have an account?  ',
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.black),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: 'Login',
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          debugPrint('Login');
+                        },
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 255, 23, 7),
+                      ),
+                    ),
+                  ],
+                ),
+              )
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget elevatedButton(BuildContext context,
+      {required Function() onPressed, required String title}) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+          backgroundColor: const Color.fromARGB(255, 255, 23, 7),
+          minimumSize: const Size(double.infinity, 56.0)),
+      onPressed: onPressed,
+      child: Text(
+        title,
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          letterSpacing: 0.8,
+        ),
+      ),
+    );
+  }
+
+  Widget textFormField({
+    required TextEditingController controller,
+    required String hintText,
+    final String? Function(String?)? validate,
+    required TextInputType inputType,
+    bool obscureText = false,
+  }) {
+    return Material(
+      elevation: 1.5,
+      borderRadius: BorderRadius.circular(30),
+      child: TextFormField(
+        keyboardType: inputType,
+        obscureText: obscureText,
+        controller: controller,
+        decoration: InputDecoration(
+          hintText: hintText,
+          hintStyle: const TextStyle(fontSize: 16),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30),
+            borderSide: const BorderSide(
+              width: 0,
+              style: BorderStyle.none,
+            ),
+          ),
+          filled: true,
+          fillColor: Colors.white,
+          contentPadding: const EdgeInsets.all(16),
+        ),
+        validator: validate,
       ),
     );
   }
