@@ -1,6 +1,7 @@
 import 'package:bloc_ecommerce/core/dependency_injection/dependency_injection.dart';
+import 'package:bloc_ecommerce/core/routes/router.dart';
+import 'package:bloc_ecommerce/features/login/presentation/blocs/login_bloc.dart';
 import 'package:bloc_ecommerce/features/register/presentation/bloc/register_bloc.dart';
-import 'package:bloc_ecommerce/features/register/presentation/views/registration_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -20,14 +21,17 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => sl<RemoteRegisterBloc>(),
         ),
+        BlocProvider(
+          create: (context) => sl<RemoteLoginBloc>(),
+        ),
       ],
-      child: MaterialApp(
+      child: MaterialApp.router(
         title: 'Flutter Ecommerce',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
           useMaterial3: true,
         ),
-        home: const RegistrationForm(),
+        routerConfig: router,
       ),
     );
   }

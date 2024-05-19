@@ -15,8 +15,8 @@ class RemoteRegisterBloc
       UserRegister event, Emitter<RemoteRegisterState> emit) async {
     emit(const RegisterLoadingState());
 
-    final result = await _registerUsecase(event.registrationParams);
-    result.fold(
+    final response = await _registerUsecase(event.registrationParams);
+    response.fold(
       (failure) => emit(RegisterErrorState(failure.message)),
       (success) => emit(RegisterFinishedState(success)),
     );

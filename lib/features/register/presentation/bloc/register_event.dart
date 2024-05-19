@@ -9,5 +9,3 @@ class UserRegister extends RemoteRegisterEvent {
 
   const UserRegister({required this.registrationParams});
 }
-
-class CheckUser extends RemoteRegisterEvent {}

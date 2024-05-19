@@ -1,45 +1,40 @@
 import 'dart:developer';
 
-import 'package:bloc_ecommerce/core/dto/registration_params.dart';
-import 'package:bloc_ecommerce/features/register/presentation/bloc/register_bloc.dart';
-import 'package:bloc_ecommerce/features/register/presentation/bloc/register_event.dart';
-import 'package:bloc_ecommerce/features/register/presentation/bloc/register_state.dart';
+import 'package:bloc_ecommerce/core/dto/login_params.dart';
+import 'package:bloc_ecommerce/features/login/presentation/blocs/login_bloc.dart';
+import 'package:bloc_ecommerce/features/login/presentation/blocs/login_event.dart';
+import 'package:bloc_ecommerce/features/login/presentation/blocs/login_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-class RegistrationForm extends StatefulWidget {
-  const RegistrationForm({super.key});
+class LoginForm extends StatefulWidget {
+  const LoginForm({super.key});
 
   @override
-  State<RegistrationForm> createState() => _RegistrationFormState();
+  State<LoginForm> createState() => _LoginFormState();
 }
 
-class _RegistrationFormState extends State<RegistrationForm> {
+class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  String? _avatarUrl;
 
   @override
   void dispose() {
-    _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
 
-  void register() {
+  void login() {
     if (_formKey.currentState!.validate()) {
-      BlocProvider.of<RemoteRegisterBloc>(context).add(
-        UserRegister(
-          registrationParams: RegistrationParams(
-            name: _nameController.text,
+      BlocProvider.of<RemoteLoginBloc>(context).add(
+        UserLogin(
+          loginParams: LoginParams(
             email: _emailController.text,
-            avatar: _avatarUrl!,
             password: _passwordController.text,
           ),
         ),
@@ -58,38 +53,8 @@ class _RegistrationFormState extends State<RegistrationForm> {
             shrinkWrap: false,
             children: <Widget>[
               const Text(
-                "Register",
+                "Login",
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              GestureDetector(
-                onTap: () async {
-                  setState(() {
-                    _avatarUrl = 'https://via.placeholder.com/150';
-                  });
-                },
-                child: CircleAvatar(
-                  radius: 40,
-                  backgroundImage:
-                      _avatarUrl != null ? NetworkImage(_avatarUrl!) : null,
-                  child: _avatarUrl == null
-                      ? const Icon(Icons.add_a_photo, size: 40)
-                      : null,
-                ),
-              ),
-              const SizedBox(height: 20),
-              textFormField(
-                controller: _nameController,
-                inputType: TextInputType.name,
-                hintText: "Enter name",
-                validate: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter your name';
-                  }
-                  return null;
-                },
               ),
               const SizedBox(height: 20),
               textFormField(
@@ -117,25 +82,26 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 },
               ),
               const SizedBox(height: 50),
-              BlocBuilder<RemoteRegisterBloc, RemoteRegisterState>(
+              BlocBuilder<RemoteLoginBloc, RemoteLoginState>(
                 builder: (context, state) {
-                  if (state is RegisterLoadingState) {
+                  if (state is LoginLoadingState) {
                     return const CupertinoActivityIndicator(
                       radius: 20,
                     );
                   }
-                  if (state is RegisterFinishedState) {
+                  if (state is LoginFinishedState) {
                     debugPrint("User login");
-                    log(state.registrationEntity!.id.toString());
+                    // log(state.loginEntity!.accessToken.toString());
+                    // TODO: add token to shared_preferences
                   }
-                  if (state is RegisterErrorState) {
+                  if (state is LoginErrorState) {
                     log(state.message);
                   }
                   return elevatedButton(
                     context,
                     title: "SUBMIT",
                     onPressed: () {
-                      register();
+                      login();
                     },
                   );
                 },
@@ -144,15 +110,15 @@ class _RegistrationFormState extends State<RegistrationForm> {
               RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(
-                  text: 'Already have an account?  ',
+                  text: "Don't have an account?  ",
                   style: const TextStyle(
                       fontWeight: FontWeight.bold, color: Colors.black),
                   children: <TextSpan>[
                     TextSpan(
-                      text: 'Login',
+                      text: 'Register',
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
-                          context.go("/");
+                          context.go("/registration");
                         },
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
