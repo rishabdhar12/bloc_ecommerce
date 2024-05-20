@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:bloc_ecommerce/core/dto/registration_params.dart';
+import 'package:bloc_ecommerce/core/utils/shared_preference.dart';
 import 'package:bloc_ecommerce/features/register/presentation/bloc/register_bloc.dart';
 import 'package:bloc_ecommerce/features/register/presentation/bloc/register_event.dart';
 import 'package:bloc_ecommerce/features/register/presentation/bloc/register_state.dart';
@@ -45,6 +46,10 @@ class _RegistrationFormState extends State<RegistrationForm> {
         ),
       );
     }
+  }
+
+  void saveId({required int id}) {
+    SharedPreferenceHelper.saveDataSharedPreferences(key: "id", value: id);
   }
 
   @override
@@ -125,8 +130,9 @@ class _RegistrationFormState extends State<RegistrationForm> {
                     );
                   }
                   if (state is RegisterFinishedState) {
-                    debugPrint("User login");
-                    log(state.registrationEntity!.id.toString());
+                    debugPrint("User registered");
+                    int id = state.registrationEntity!.id;
+                    saveId(id: id);
                   }
                   if (state is RegisterErrorState) {
                     log(state.message);

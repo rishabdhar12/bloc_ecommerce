@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:bloc_ecommerce/core/dto/login_params.dart';
+import 'package:bloc_ecommerce/core/utils/shared_preference.dart';
 import 'package:bloc_ecommerce/features/login/presentation/blocs/login_bloc.dart';
 import 'package:bloc_ecommerce/features/login/presentation/blocs/login_event.dart';
 import 'package:bloc_ecommerce/features/login/presentation/blocs/login_state.dart';
@@ -40,6 +41,11 @@ class _LoginFormState extends State<LoginForm> {
         ),
       );
     }
+  }
+
+  void saveToken({required String accessToken}) {
+    SharedPreferenceHelper.saveDataSharedPreferences(
+        key: "isLoggedIn", value: accessToken);
   }
 
   @override
@@ -90,9 +96,8 @@ class _LoginFormState extends State<LoginForm> {
                     );
                   }
                   if (state is LoginFinishedState) {
-                    debugPrint("User login");
-                    // log(state.loginEntity!.accessToken.toString());
-                    // TODO: add token to shared_preferences
+                    String accessToken = state.loginEntity!.accessToken;
+                    saveToken(accessToken: accessToken);
                   }
                   if (state is LoginErrorState) {
                     log(state.message);
