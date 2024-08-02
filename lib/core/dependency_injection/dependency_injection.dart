@@ -1,3 +1,4 @@
+import 'package:bloc_ecommerce/features/home/presentation/bloc/bottom_navigation_bloc.dart';
 import 'package:bloc_ecommerce/features/login/data/datasource/login_datasource.dart';
 import 'package:bloc_ecommerce/features/login/data/repositories/login_repository_impl.dart';
 import 'package:bloc_ecommerce/features/login/domain/repositories/login_repository.dart';
@@ -31,4 +32,5 @@ Future<void> initializeDependencies() async {
   // Blocs
   sl.registerFactory<RemoteRegisterBloc>(() => RemoteRegisterBloc(sl()));
   sl.registerFactory<RemoteLoginBloc>(() => RemoteLoginBloc(sl()));
+  sl.registerFactory<BottomNavigationBloc>(() => BottomNavigationBloc());
 }

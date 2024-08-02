@@ -45,7 +45,12 @@ class _LoginFormState extends State<LoginForm> {
 
   void saveToken({required String accessToken}) {
     SharedPreferenceHelper.saveDataSharedPreferences(
-        key: "isLoggedIn", value: accessToken);
+        key: "accessToken", value: accessToken);
+  }
+
+  void saveLoginState({required bool isLoggedIn}) {
+    SharedPreferenceHelper.saveDataSharedPreferences(
+        key: "isLoggedIn", value: isLoggedIn);
   }
 
   @override
@@ -88,7 +93,13 @@ class _LoginFormState extends State<LoginForm> {
                 },
               ),
               const SizedBox(height: 50),
-              BlocBuilder<RemoteLoginBloc, RemoteLoginState>(
+              BlocConsumer<RemoteLoginBloc, RemoteLoginState>(
+                listenWhen: (context, state) {
+                  return state is LoginFinishedState;
+                },
+                listener: (context, state) {
+                  context.replace('/layout');
+                },
                 builder: (context, state) {
                   if (state is LoginLoadingState) {
                     return const CupertinoActivityIndicator(
@@ -97,7 +108,9 @@ class _LoginFormState extends State<LoginForm> {
                   }
                   if (state is LoginFinishedState) {
                     String accessToken = state.loginEntity!.accessToken;
+                    log("User logged in");
                     saveToken(accessToken: accessToken);
+                    saveLoginState(isLoggedIn: true);
                   }
                   if (state is LoginErrorState) {
                     log(state.message);

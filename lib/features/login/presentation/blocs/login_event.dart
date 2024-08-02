@@ -9,5 +9,3 @@ class UserLogin extends RemoteLoginEvent {
 
   const UserLogin({required this.loginParams});
 }
-
-class CheckUser extends RemoteLoginEvent {}
