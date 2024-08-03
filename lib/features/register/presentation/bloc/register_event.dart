@@ -1,4 +1,4 @@
-import 'package:bloc_ecommerce/core/dto/registration_params.dart';
+import 'package:bloc_ecommerce/features/register/dto/registration_params.dart';
 
 abstract class RemoteRegisterEvent {
   const RemoteRegisterEvent();

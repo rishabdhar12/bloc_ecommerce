@@ -1,7 +1,7 @@
 import 'dart:developer';
 
-import 'package:bloc_ecommerce/core/dto/login_params.dart';
 import 'package:bloc_ecommerce/core/utils/shared_preference.dart';
+import 'package:bloc_ecommerce/features/login/dto/login_params.dart';
 import 'package:bloc_ecommerce/features/login/presentation/blocs/login_bloc.dart';
 import 'package:bloc_ecommerce/features/login/presentation/blocs/login_event.dart';
 import 'package:bloc_ecommerce/features/login/presentation/blocs/login_state.dart';
@@ -20,8 +20,10 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController =
+      TextEditingController(text: "john@mail.com");
+  final TextEditingController _passwordController =
+      TextEditingController(text: "changeme");
 
   @override
   void dispose() {

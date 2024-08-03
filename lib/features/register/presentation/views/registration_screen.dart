@@ -1,7 +1,7 @@
 import 'dart:developer';
 
-import 'package:bloc_ecommerce/core/dto/registration_params.dart';
 import 'package:bloc_ecommerce/core/utils/shared_preference.dart';
+import 'package:bloc_ecommerce/features/register/dto/registration_params.dart';
 import 'package:bloc_ecommerce/features/register/presentation/bloc/register_bloc.dart';
 import 'package:bloc_ecommerce/features/register/presentation/bloc/register_event.dart';
 import 'package:bloc_ecommerce/features/register/presentation/bloc/register_state.dart';

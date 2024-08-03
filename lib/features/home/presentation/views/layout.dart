@@ -1,8 +1,13 @@
+import 'package:bloc_ecommerce/features/cart/presentation/views/cart_screen.dart';
+import 'package:bloc_ecommerce/features/categories/presentation/bloc/categories_bloc.dart';
+import 'package:bloc_ecommerce/features/categories/presentation/bloc/categories_event.dart';
 import 'package:bloc_ecommerce/features/home/presentation/bloc/bottom_navigation_bloc.dart';
 import 'package:bloc_ecommerce/features/home/presentation/bloc/bottom_navigation_event.dart';
 import 'package:bloc_ecommerce/features/home/presentation/bloc/bottom_navigation_state.dart';
 import 'package:bloc_ecommerce/features/home/presentation/views/home_screen.dart';
+import 'package:bloc_ecommerce/features/profile/presentation/views/profile_screen.dart';
 import 'package:bloc_ecommerce/features/shop/presentation/views/shop_screen.dart';
+import 'package:bloc_ecommerce/features/wishlist/presentation/views/wishlist_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -28,6 +33,8 @@ class _LayoutPageState extends State<LayoutPage> {
               onTap: (index) {
                 switch (index) {
                   case 0:
+                    BlocProvider.of<RemoteCategoriesBloc>(context)
+                        .add(const GetCategories());
                     BlocProvider.of<BottomNavigationBloc>(context)
                         .add((const HomeEvent()));
                   case 1:
@@ -80,6 +87,12 @@ class _LayoutPageState extends State<LayoutPage> {
                   return const HomeScreen();
                 } else if (state is ShopState) {
                   return const ShopScreen();
+                } else if (state is CartState) {
+                  return const CartScreen();
+                } else if (state is WishlistState) {
+                  return const WishlistScreen();
+                } else if (state is ProfileState) {
+                  return const ProfileScreen();
                 } else {
                   return const SizedBox();
                 }

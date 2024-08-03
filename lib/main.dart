@@ -1,6 +1,7 @@
 import 'package:bloc_ecommerce/core/dependency_injection/dependency_injection.dart';
 import 'package:bloc_ecommerce/core/routes/router.dart';
 import 'package:bloc_ecommerce/core/utils/shared_preference.dart';
+import 'package:bloc_ecommerce/features/categories/presentation/bloc/categories_bloc.dart';
 import 'package:bloc_ecommerce/features/home/presentation/bloc/bottom_navigation_bloc.dart';
 import 'package:bloc_ecommerce/features/login/presentation/blocs/login_bloc.dart';
 import 'package:bloc_ecommerce/features/register/presentation/bloc/register_bloc.dart';
@@ -29,6 +30,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => sl<BottomNavigationBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => sl<RemoteCategoriesBloc>(),
         ),
       ],
       child: MaterialApp.router(

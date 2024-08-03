@@ -1,8 +1,8 @@
-import 'package:bloc_ecommerce/core/dto/login_params.dart';
 import 'package:bloc_ecommerce/core/errors/failure.dart';
 import 'package:bloc_ecommerce/core/usecase/usecase.dart';
 import 'package:bloc_ecommerce/features/login/domain/entities/login_entity.dart';
 import 'package:bloc_ecommerce/features/login/domain/repositories/login_repository.dart';
+import 'package:bloc_ecommerce/features/login/dto/login_params.dart';
 import 'package:fpdart/fpdart.dart';
 
 class LoginUsecase extends BaseUsecase<LoginEntity, LoginParams> {

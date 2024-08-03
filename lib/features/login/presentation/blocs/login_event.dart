@@ -1,4 +1,4 @@
-import 'package:bloc_ecommerce/core/dto/login_params.dart';
+import 'package:bloc_ecommerce/features/login/dto/login_params.dart';
 
 abstract class RemoteLoginEvent {
   const RemoteLoginEvent();
