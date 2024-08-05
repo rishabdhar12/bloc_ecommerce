@@ -5,6 +5,7 @@ import 'package:bloc_ecommerce/features/categories/presentation/bloc/categories_
 import 'package:bloc_ecommerce/features/home/presentation/bloc/bottom_navigation_bloc.dart';
 import 'package:bloc_ecommerce/features/login/presentation/blocs/login_bloc.dart';
 import 'package:bloc_ecommerce/features/register/presentation/bloc/register_bloc.dart';
+import 'package:bloc_ecommerce/features/shop/presentation/bloc/product_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -33,6 +34,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => sl<RemoteCategoriesBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => sl<RemoteProductBloc>(),
         ),
       ],
       child: MaterialApp.router(

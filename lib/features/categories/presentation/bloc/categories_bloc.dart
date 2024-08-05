@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:bloc_ecommerce/core/usecase/usecase.dart';
 import 'package:bloc_ecommerce/features/categories/domain/usecases/categories_usecase.dart';
 import 'package:bloc_ecommerce/features/categories/presentation/bloc/categories_event.dart';
@@ -20,7 +18,6 @@ class RemoteCategoriesBloc
     emit(const CategoriesLoadingState());
 
     final response = await _categoriesUsecase(NoParams());
-    log("$response");
     response.fold(
       (failure) => emit(CategoriesErrorState(failure.message)),
       (success) => emit(CategoriesFinishedState(success)),

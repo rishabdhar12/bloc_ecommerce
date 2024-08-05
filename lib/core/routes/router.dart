@@ -5,6 +5,7 @@ import 'package:bloc_ecommerce/features/login/presentation/views/login_screen.da
 import 'package:bloc_ecommerce/features/profile/presentation/views/profile_screen.dart';
 import 'package:bloc_ecommerce/features/register/presentation/views/registration_screen.dart';
 import 'package:bloc_ecommerce/features/shop/presentation/views/shop_screen.dart';
+import 'package:bloc_ecommerce/features/splash/presentation/views/splash_screen.dart';
 import 'package:bloc_ecommerce/features/wishlist/presentation/views/wishlist_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -14,9 +15,15 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
-        return const LoginForm();
+        return const SplashScreen();
       },
       routes: <RouteBase>[
+        GoRoute(
+          path: 'login',
+          builder: (BuildContext context, GoRouterState state) {
+            return const LoginForm();
+          },
+        ),
         GoRoute(
           path: 'registration',
           builder: (BuildContext context, GoRouterState state) {

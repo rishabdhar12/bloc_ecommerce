@@ -14,6 +14,11 @@ import 'package:bloc_ecommerce/features/register/data/repository/register_reposi
 import 'package:bloc_ecommerce/features/register/domain/repositories/register_repository.dart';
 import 'package:bloc_ecommerce/features/register/domain/usecases/register_usecase.dart';
 import 'package:bloc_ecommerce/features/register/presentation/bloc/register_bloc.dart';
+import 'package:bloc_ecommerce/features/shop/data/datasource/product_datasource.dart';
+import 'package:bloc_ecommerce/features/shop/data/repositories/product_repository_impl.dart';
+import 'package:bloc_ecommerce/features/shop/domain/repositories/product_repository.dart';
+import 'package:bloc_ecommerce/features/shop/domain/usecases/product_usecase.dart';
+import 'package:bloc_ecommerce/features/shop/presentation/bloc/product_bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 
@@ -23,23 +28,28 @@ Future<void> initializeDependencies() async {
   // Dio
   sl.registerSingleton<Dio>(Dio());
 
-  // Dependencies
+  // Service
   sl.registerSingleton<RegisterApiService>(RegisterApiService(sl()));
   sl.registerSingleton<LoginApiService>(LoginApiService(sl()));
   sl.registerSingleton<CategoriesApiService>(CategoriesApiService(sl()));
+  sl.registerSingleton<ProductApiService>(ProductApiService(sl()));
 
+  // Repository
   sl.registerSingleton<RegisterRepository>(RegisterRepositoryImpl(sl()));
   sl.registerSingleton<LoginRepository>(LoginRepositoryImpl(sl()));
   sl.registerSingleton<CategoriesRepository>(CategoriesRepositoryImpl(sl()));
+  sl.registerSingleton<ProductRepository>(ProductRepositoryImpl(sl()));
 
   // Usecase
   sl.registerSingleton<RegisterUsecase>(RegisterUsecase(sl()));
   sl.registerSingleton<LoginUsecase>(LoginUsecase(sl()));
   sl.registerSingleton<CategoriesUsecase>(CategoriesUsecase(sl()));
+  sl.registerSingleton<ProductUsecase>(ProductUsecase(sl()));
 
   // Blocs
   sl.registerFactory<RemoteRegisterBloc>(() => RemoteRegisterBloc(sl()));
   sl.registerFactory<RemoteLoginBloc>(() => RemoteLoginBloc(sl()));
   sl.registerFactory<BottomNavigationBloc>(() => BottomNavigationBloc());
   sl.registerFactory<RemoteCategoriesBloc>(() => RemoteCategoriesBloc(sl()));
+  sl.registerFactory<RemoteProductBloc>(() => RemoteProductBloc(sl()));
 }

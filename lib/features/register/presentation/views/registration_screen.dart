@@ -122,21 +122,28 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 },
               ),
               const SizedBox(height: 50),
-              BlocBuilder<RemoteRegisterBloc, RemoteRegisterState>(
+              BlocConsumer<RemoteRegisterBloc, RemoteRegisterState>(
+                listenWhen: (context, state) {
+                  return state is RegisterFinishedState;
+                },
+                listener: (context, state) {
+                  if (state is RegisterFinishedState) {
+                    debugPrint("User registered");
+                    int id = state.registrationEntity!.id;
+                    saveId(id: id);
+                    context.go("/login");
+                  }
+                  if (state is RegisterErrorState) {
+                    log(state.message);
+                  }
+                },
                 builder: (context, state) {
                   if (state is RegisterLoadingState) {
                     return const CupertinoActivityIndicator(
                       radius: 20,
                     );
                   }
-                  if (state is RegisterFinishedState) {
-                    debugPrint("User registered");
-                    int id = state.registrationEntity!.id;
-                    saveId(id: id);
-                  }
-                  if (state is RegisterErrorState) {
-                    log(state.message);
-                  }
+
                   return elevatedButton(
                     context,
                     title: "SUBMIT",

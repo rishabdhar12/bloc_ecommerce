@@ -20,10 +20,8 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailController =
-      TextEditingController(text: "john@mail.com");
-  final TextEditingController _passwordController =
-      TextEditingController(text: "changeme");
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   void dispose() {
@@ -50,8 +48,8 @@ class _LoginFormState extends State<LoginForm> {
         key: "accessToken", value: accessToken);
   }
 
-  void saveLoginState({required bool isLoggedIn}) {
-    SharedPreferenceHelper.saveDataSharedPreferences(
+  void saveLoginState({required bool isLoggedIn}) async {
+    await SharedPreferenceHelper.saveDataSharedPreferences(
         key: "isLoggedIn", value: isLoggedIn);
   }
 
@@ -100,7 +98,16 @@ class _LoginFormState extends State<LoginForm> {
                   return state is LoginFinishedState;
                 },
                 listener: (context, state) {
-                  context.replace('/layout');
+                  if (state is LoginFinishedState) {
+                    String accessToken = state.loginEntity!.accessToken;
+                    log("User logged in");
+                    saveToken(accessToken: accessToken);
+                    saveLoginState(isLoggedIn: true);
+                    context.replace('/layout');
+                  }
+                  if (state is LoginErrorState) {
+                    log(state.message);
+                  }
                 },
                 builder: (context, state) {
                   if (state is LoginLoadingState) {
@@ -108,15 +115,7 @@ class _LoginFormState extends State<LoginForm> {
                       radius: 20,
                     );
                   }
-                  if (state is LoginFinishedState) {
-                    String accessToken = state.loginEntity!.accessToken;
-                    log("User logged in");
-                    saveToken(accessToken: accessToken);
-                    saveLoginState(isLoggedIn: true);
-                  }
-                  if (state is LoginErrorState) {
-                    log(state.message);
-                  }
+
                   return elevatedButton(
                     context,
                     title: "SUBMIT",

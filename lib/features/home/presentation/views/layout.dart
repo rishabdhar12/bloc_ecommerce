@@ -6,6 +6,8 @@ import 'package:bloc_ecommerce/features/home/presentation/bloc/bottom_navigation
 import 'package:bloc_ecommerce/features/home/presentation/bloc/bottom_navigation_state.dart';
 import 'package:bloc_ecommerce/features/home/presentation/views/home_screen.dart';
 import 'package:bloc_ecommerce/features/profile/presentation/views/profile_screen.dart';
+import 'package:bloc_ecommerce/features/shop/presentation/bloc/product_bloc.dart';
+import 'package:bloc_ecommerce/features/shop/presentation/bloc/product_event.dart';
 import 'package:bloc_ecommerce/features/shop/presentation/views/shop_screen.dart';
 import 'package:bloc_ecommerce/features/wishlist/presentation/views/wishlist_screen.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +22,13 @@ class LayoutPage extends StatefulWidget {
 
 class _LayoutPageState extends State<LayoutPage> {
   @override
+  void initState() {
+    BlocProvider.of<RemoteCategoriesBloc>(context).add(const GetCategories());
+    BlocProvider.of<RemoteProductBloc>(context).add(const GetAllProducts());
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<BottomNavigationBloc, BottomNavigationState>(
       builder: (context, state) {
@@ -33,8 +42,6 @@ class _LayoutPageState extends State<LayoutPage> {
               onTap: (index) {
                 switch (index) {
                   case 0:
-                    BlocProvider.of<RemoteCategoriesBloc>(context)
-                        .add(const GetCategories());
                     BlocProvider.of<BottomNavigationBloc>(context)
                         .add((const HomeEvent()));
                   case 1:
