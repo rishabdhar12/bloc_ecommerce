@@ -13,7 +13,7 @@ class _ProductApiService implements ProductApiService {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'https://api.escuelajs.co/api/v1';
+    baseUrl ??= 'http://192.168.29.182:3000';
   }
 
   final Dio _dio;

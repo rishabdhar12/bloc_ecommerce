@@ -10,7 +10,7 @@ part 'login_datasource.g.dart';
 abstract class LoginApiService {
   factory LoginApiService(Dio dio) = _LoginApiService;
 
-  @POST("/auth/login")
+  @GET("/user/login")
   @Headers(<String, dynamic>{'Content-Type': 'application/json'})
   Future<LoginModel> login(@Body() Map<String, dynamic> loginParams);
 }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc_ecommerce/features/register/domain/usecases/register_usecase.dart';
 import 'package:bloc_ecommerce/features/register/presentation/bloc/register_event.dart';
 import 'package:bloc_ecommerce/features/register/presentation/bloc/register_state.dart';
@@ -17,7 +19,10 @@ class RemoteRegisterBloc
 
     final response = await _registerUsecase(event.registrationParams);
     response.fold(
-      (failure) => emit(RegisterErrorState(failure.message)),
+      (failure) {
+        log(failure.message);
+        emit(RegisterErrorState(failure.message));
+      },
       (success) => emit(RegisterFinishedState(success)),
     );
   }

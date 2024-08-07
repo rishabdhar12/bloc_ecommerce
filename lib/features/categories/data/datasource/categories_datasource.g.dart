@@ -13,7 +13,7 @@ class _CategoriesApiService implements CategoriesApiService {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'https://api.escuelajs.co/api/v1';
+    baseUrl ??= 'https://fakestoreapi.com/';
   }
 
   final Dio _dio;
@@ -34,7 +34,7 @@ class _CategoriesApiService implements CategoriesApiService {
     )
             .compose(
               _dio.options,
-              '/categories',
+              '/products/categories',
               queryParameters: queryParameters,
               data: _data,
             )

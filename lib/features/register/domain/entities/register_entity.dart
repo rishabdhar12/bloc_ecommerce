@@ -1,22 +1,17 @@
+import 'package:bloc_ecommerce/features/profile/domain/entities/user_entity.dart';
 import 'package:equatable/equatable.dart';
 
 class RegistrationEntity extends Equatable {
-  final int id;
-  final String name;
-  final String email;
-  final String role;
-  final String avatar;
-  final String password;
+  final String status;
+  final String message;
+  final UserEntity user;
 
   const RegistrationEntity({
-    required this.id,
-    required this.name,
-    required this.email,
-    required this.role,
-    required this.avatar,
-    required this.password,
+    required this.status,
+    required this.message,
+    required this.user,
   });
 
   @override
-  List<Object?> get props => [id, name, email, password, role, avatar];
+  List<Object?> get props => [status, message, user];
 }

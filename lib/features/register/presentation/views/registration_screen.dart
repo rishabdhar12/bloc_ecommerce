@@ -20,10 +20,11 @@ class RegistrationForm extends StatefulWidget {
 
 class _RegistrationFormState extends State<RegistrationForm> {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  String? _avatarUrl;
+  final TextEditingController _phoneNoController = TextEditingController();
 
   @override
   void dispose() {
@@ -38,9 +39,10 @@ class _RegistrationFormState extends State<RegistrationForm> {
       BlocProvider.of<RemoteRegisterBloc>(context).add(
         UserRegister(
           registrationParams: RegistrationParams(
+            username: _usernameController.text,
             name: _nameController.text,
             email: _emailController.text,
-            avatar: _avatarUrl!,
+            phoneNumber: _phoneNoController.text,
             password: _passwordController.text,
           ),
         ),
@@ -48,7 +50,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
     }
   }
 
-  void saveId({required int id}) {
+  void saveId({required String id}) {
     SharedPreferenceHelper.saveDataSharedPreferences(key: "id", value: id);
   }
 
@@ -69,20 +71,16 @@ class _RegistrationFormState extends State<RegistrationForm> {
               const SizedBox(
                 height: 30,
               ),
-              GestureDetector(
-                onTap: () async {
-                  setState(() {
-                    _avatarUrl = 'https://via.placeholder.com/150';
-                  });
+              textFormField(
+                controller: _usernameController,
+                inputType: TextInputType.name,
+                hintText: "Enter username",
+                validate: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter your username';
+                  }
+                  return null;
                 },
-                child: CircleAvatar(
-                  radius: 40,
-                  backgroundImage:
-                      _avatarUrl != null ? NetworkImage(_avatarUrl!) : null,
-                  child: _avatarUrl == null
-                      ? const Icon(Icons.add_a_photo, size: 40)
-                      : null,
-                ),
               ),
               const SizedBox(height: 20),
               textFormField(
@@ -121,6 +119,18 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   return null;
                 },
               ),
+              const SizedBox(height: 20),
+              textFormField(
+                controller: _phoneNoController,
+                inputType: TextInputType.phone,
+                hintText: "Enter phone number",
+                validate: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter your phone number';
+                  }
+                  return null;
+                },
+              ),
               const SizedBox(height: 50),
               BlocConsumer<RemoteRegisterBloc, RemoteRegisterState>(
                 listenWhen: (context, state) {
@@ -129,7 +139,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 listener: (context, state) {
                   if (state is RegisterFinishedState) {
                     debugPrint("User registered");
-                    int id = state.registrationEntity!.id;
+                    String id = state.registrationEntity!.user.id;
                     saveId(id: id);
                     context.go("/login");
                   }

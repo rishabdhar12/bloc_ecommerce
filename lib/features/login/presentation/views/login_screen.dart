@@ -20,8 +20,10 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController =
+      TextEditingController(text: 'rishab2@gmail.com');
+  final TextEditingController _passwordController =
+      TextEditingController(text: '12345678');
 
   @override
   void dispose() {
@@ -99,7 +101,7 @@ class _LoginFormState extends State<LoginForm> {
                 },
                 listener: (context, state) {
                   if (state is LoginFinishedState) {
-                    String accessToken = state.loginEntity!.accessToken;
+                    String accessToken = state.loginEntity!.user.token;
                     log("User logged in");
                     saveToken(accessToken: accessToken);
                     saveLoginState(isLoggedIn: true);

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc_ecommerce/features/login/domain/usecase/login_usecase.dart';
 import 'package:bloc_ecommerce/features/login/presentation/blocs/login_event.dart';
 import 'package:bloc_ecommerce/features/login/presentation/blocs/login_state.dart';
@@ -15,7 +17,10 @@ class RemoteLoginBloc extends Bloc<RemoteLoginEvent, RemoteLoginState> {
 
     final response = await _loginUsecase(event.loginParams);
     response.fold(
-      (failure) => emit(LoginErrorState(failure.message)),
+      (failure) {
+        log(failure.message);
+        emit(LoginErrorState(failure.message));
+      },
       (success) => emit(LoginFinishedState(success)),
     );
   }

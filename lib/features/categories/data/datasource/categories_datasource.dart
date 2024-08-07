@@ -6,10 +6,10 @@ import 'package:retrofit/retrofit.dart';
 
 part 'categories_datasource.g.dart';
 
-@RestApi(baseUrl: AppStrings.baseUrl)
+@RestApi(baseUrl: AppStrings.fakeStoreUrl)
 abstract class CategoriesApiService {
   factory CategoriesApiService(Dio dio) = _CategoriesApiService;
 
-  @GET("/categories")
+  @GET("/products/categories")
   Future<List<CategoryModel>> getCategories();
 }

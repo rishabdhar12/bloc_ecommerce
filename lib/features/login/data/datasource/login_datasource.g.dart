@@ -13,7 +13,7 @@ class _LoginApiService implements LoginApiService {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'https://api.escuelajs.co/api/v1';
+    baseUrl ??= 'http://192.168.29.182:3000';
   }
 
   final Dio _dio;
@@ -30,14 +30,14 @@ class _LoginApiService implements LoginApiService {
     _data.addAll(loginParams);
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<LoginModel>(Options(
-      method: 'POST',
+      method: 'GET',
       headers: _headers,
       extra: _extra,
       contentType: 'application/json',
     )
             .compose(
               _dio.options,
-              '/auth/login',
+              '/user/login',
               queryParameters: queryParameters,
               data: _data,
             )

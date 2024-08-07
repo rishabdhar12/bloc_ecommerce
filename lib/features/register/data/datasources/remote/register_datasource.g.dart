@@ -13,7 +13,7 @@ class _RegisterApiService implements RegisterApiService {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'https://api.escuelajs.co/api/v1';
+    baseUrl ??= 'http://192.168.29.182:3000';
   }
 
   final Dio _dio;
@@ -38,7 +38,7 @@ class _RegisterApiService implements RegisterApiService {
     )
             .compose(
               _dio.options,
-              '/users/',
+              '/user/register',
               queryParameters: queryParameters,
               data: _data,
             )

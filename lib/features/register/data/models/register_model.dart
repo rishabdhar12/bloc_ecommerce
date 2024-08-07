@@ -1,22 +1,17 @@
+import 'package:bloc_ecommerce/features/profile/data/models/user_model.dart';
 import 'package:bloc_ecommerce/features/register/domain/entities/register_entity.dart';
 
 class RegistrationModel extends RegistrationEntity {
   const RegistrationModel({
-    required super.id,
-    required super.name,
-    required super.email,
-    required super.role,
-    required super.avatar,
-    required super.password,
+    required super.status,
+    required super.message,
+    required super.user,
   });
 
   factory RegistrationModel.fromJson(Map<String, dynamic> json) =>
       RegistrationModel(
-        id: json["id"],
-        name: json["name"],
-        email: json["email"],
-        role: json["role"],
-        avatar: json["avatar"],
-        password: json["password"],
+        status: json["status"],
+        message: json["message"],
+        user: UserModel.fromJson(json["user"]),
       );
 }

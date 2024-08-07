@@ -1,5 +1,6 @@
 class AppStrings {
-  static const String baseUrl = "https://api.escuelajs.co/api/v1";
+  static const String baseUrl = "http://192.168.29.182:3000";
+  static const String fakeStoreUrl = "https://fakestoreapi.com/";
   static const String badRequestError = "This email has been used before";
   static const String noContent = "no_content";
   static const String forbiddenError = "forbidden_error";

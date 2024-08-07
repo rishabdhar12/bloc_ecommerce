@@ -9,7 +9,7 @@ part "register_datasource.g.dart";
 abstract class RegisterApiService {
   factory RegisterApiService(Dio dio) = _RegisterApiService;
 
-  @POST('/users/')
+  @POST('/user/register')
   @Headers(<String, dynamic>{
     'Content-Type': 'application/json',
   })
